@@ -15,82 +15,28 @@
       !roshambo (rock or r, paper or p, scissors or s)
 
     Example:
-      !roshambo rock
+      !roshambo scissors
 
-      @USER, played rock.
-      @BOT played scissors.
-      @USER Wins!
+      Rock.. Paper.. Scissors.. SHOOT: 👊
+
     ------------------------------------------------------------------------
+    // 🖖 for later use :D
 */
 
 const Confax = require('../bot.js')
-const moves = ['rock', 'paper', 'scissors']
-const mojiMoves = [' ✊', ' ✋', ' ✌']
-const scores = [[0, 0, 1],
-                [1, 0, 0],
-                [0, 1, 0]]
+const allMoves = [
+  'rock', 'r', '✊', '🤜', '🤜', '👊',
+  'paper', 'p', '✋', '🖐', '📄', '📃', '🗒',
+  'scissors', 's', '✌', '✂'
+]
+const mojiMoves = [' 👊', ' ✋', ' ✌']
 
-Confax.registerCommand('roshambo', 'default', (message, bot) => {
+Confax.registerCommand('roshambo', 'default', (message) => {
   let userMove = message.content.toLowerCase()
-  if (userMove.includes('rock') || userMove.lastIndexOf('r') === 0 || userMove.includes('✊')) {
-    userMove = 'rock'
-  } else if (userMove.includes('paper') || userMove.lastIndexOf('p') === 0 || userMove.includes('✋')) {
-    userMove = 'paper'
-  } else if (userMove.includes('scissors') || userMove.lastIndexOf('s') === 0 || userMove.includes('✌')) {
-    userMove = 'scissors'
+  userMove = allMoves.indexOf(userMove) >= 0 ? userMove : null
+  if (userMove == null) {
+    return '***' + message + '***' + ' is not a valid move.\n\n `Please use:  ` ' + allMoves.join(', ')
   } else {
-    return message + ' is not a valid play.\n\n `Please use: \'Paper\', \'Rock\', or \'Scissors\'`'
+    message.channel.send('Rock.. Paper.. Scissors.. SHOOT: ' + mojiMoves[Math.floor(Math.random() * 3)])
   }
-  return Roshambo(message, userMove, moves.indexOf(userMove))
-}, moves, 'Play Rock-Paper-Scissors! !roshambo rock', '[]')
-
-/**
- * Calculate Bot move, Check for winner, return results to send to channel.
- * @param  {string[]} message
- * @param  {string} userMove
- * @param  {number} userIndex
- */
-function Roshambo (message, userMove, userIndex) {
-  let botIndex = Math.floor(Math.random() * 3)
-  return DetermineWinner(message, userMove, userIndex, moves[botIndex], botIndex)
-}
-
-/**
- * Check if User or Bot wins, else its a draw.
- * @param  {string[]} message
- * @param  {string} userMove
- * @param  {number} userIndex
- * @param  {string} botMove
- * @param  {number} botIndex
- */
-function DetermineWinner (message, userMove, userIndex, botMove, botIndex) {
-  /*
-  This could simply display the result of the bot move, and let the user
-  figure our if he/she won or lost.
-  */
-  let winner
-  if (scores[userIndex][botIndex] > scores[botIndex][userIndex]) {
-    winner = message.author + ' **Wins!**'
-  } else if (scores[userIndex][botIndex] < scores[botIndex][userIndex]) {
-    winner = Confax.bot.user + ' **Wins!**'
-  } else {
-    winner = '**Its a draw!**'
-  }
-  /*
-  Could also show an emoji of the move
-  */
-  let userMoji = mojiMoves[userIndex]
-  let botMoji = mojiMoves[botIndex]
-  return PrintResults(winner, userMove, botMove, userMoji, botMoji)
-}
-
-/**
- * Return the results in string for sending as a message to the channel.
- * @param  {string} winner
- * @param  {string} userMove
- * @param  {string} botMove
- */
-function PrintResults (winner, userMove, botMove, userMoji, botMoji) {
-  return 'played ' + userMove + userMoji + '.\n' + Confax.bot.user +
-         ' played ' + botMove + botMoji + '.\n' + winner
-}
+}, allMoves, 'Play Rock-Paper-Scissors! !roshambo rock', '[]')
