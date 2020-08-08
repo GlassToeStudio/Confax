@@ -25,6 +25,7 @@ var trace1
 var trace2
 
 GlassBot.registerCommand('cryptohistory', 'default', (message, bot) => {
+  message.reply('**This api has been updated and this command no longer functions.**')
   let histories = [365, 180, 90, 30, 7, 1]
   let xAxis = []
   let yAxis = []
