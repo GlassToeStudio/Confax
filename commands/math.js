@@ -4,7 +4,7 @@ const math = require('mathjs')
 GlassBot.registerCommand('math', 'default', (message, bot) => {
   let result
   try {
-    result = math.eval(message.content)
+    result = math.evaluate(message.content)
   } catch (error) {
     console.log('Failed math calculation ' + message.content + '\nError: ' + error.stack)
     return 'Error while evaluating the math expression.'

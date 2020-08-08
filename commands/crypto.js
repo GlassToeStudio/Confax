@@ -8,7 +8,7 @@
     ------------------------------------------------------------------------
     Return current price of a given crypto-currency in $US
 
-    The following command is using a free API from https://www.cryptocompare.com/ (CC BY-NC 3.0)
+    The following command is uisng a free API from https://www.cryptocompare.com/ (CC BY-NC 3.0)
     The API request can be found here: https://www.cryptocompare.com/api#-api-data-price-
 
     Usage:
@@ -23,18 +23,18 @@
     ------------------------------------------------------------------------
 
 */
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 const request = require('request')
 const Discord = require('discord.js')
-const currencySymbolMap = require('../map')
+const currencySymbolMap = require('../map.js')
 
-GlassBot.registerCommand('crypto', 'default', (message, bot) => {
+Confax.registerCommand('crypto', 'default', (message, bot) => {
   //  Init variables
   let symbols = (message.content.split(' ')).map(function (x) { return x.toUpperCase() })
   let fromSymbol = (symbols.shift()).replace(/`/ig, '')
   if (symbols.length === 0) symbols.push('USD')
-  CrytpoComparePrice(fromSymbol, symbols, message)
-}, ['crypt', 'price'], 'Get latest crypto exchange price in USD, or in other cryptos.', '<crypto-currency ticker> (crypto-currency ticker )')
+  CryptoComparePrice(fromSymbol, symbols, message)
+}, ['crypt', 'price'], 'Get latest crypto exchange price in USD, or in other cryptos.', '<crypto-currency ticker>')
 
 /**
  * Return the exchange rate for one crypto currency in terms of other currencies.
@@ -42,13 +42,13 @@ GlassBot.registerCommand('crypto', 'default', (message, bot) => {
  * @param  {string[]} tsyms
  * @param  {string} messge
  */
-function CrytpoComparePrice (fsym, tsyms, message) {
+function CryptoComparePrice (fsym, tsyms, message) {
   //  The API call string.
   let cryptoComparePrice = 'https://min-api.cryptocompare.com/data/price?fsym=' + fsym + '&tsyms=' + tsyms
 
   request(cryptoComparePrice, function (error, response, body) {
     if (error) message.channel.send('Not a valid crypto currency, try BTC or ETH.')
-    let embed = new Discord.RichEmbed().setTitle('cryptocompare.com')
+    let embed = new Discord.MessageEmbed().setTitle('cryptocompare.com')
       .setDescription('```MarkDown\n#_Exchange rates for 1 ' + fsym + '```')
       .setURL('https://www.cryptocompare.com/api/')
       .setColor(586901)

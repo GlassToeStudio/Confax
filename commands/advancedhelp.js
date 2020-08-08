@@ -1,11 +1,11 @@
-const Glassbot = require('../bot.js')
-const config = require('../config.json')
+const Confax = require('../bot.js')
 
-Glassbot.registerCommand('advancedhelp', 'default', (message, bot) => {
+Confax.registerCommand('advancedhelp', 'default', (message, bot) => {
+  const config = Confax.getConfig(message.guild.id) 
   let helpMsg = '**Advanced Help**\n\n' +
   'All commands are prefixed with: `' + config.prefix + '`\n\n'
 
-  let commands = Glassbot.commands
+  let commands = Confax.commands
 
   for (let loopCmdType in commands) {
     helpMsg += '**~~------~~** __' + loopCmdType.toUpperCase() + ' COMMANDS__ **~~------~~**'

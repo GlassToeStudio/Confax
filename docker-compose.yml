@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  confax:
+    build: .
+    container_name: confax
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=
+    volumes:
+      - './guilds:/usr/share/app/guilds'

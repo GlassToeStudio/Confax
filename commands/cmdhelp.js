@@ -1,4 +1,4 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
 GlassBot.registerCommand('cmdhelp', 'default', (message, bot) => {
   let helpInfo = ''

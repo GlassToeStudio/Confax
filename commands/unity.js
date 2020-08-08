@@ -20,8 +20,6 @@
     ------------------------------------------------------------------------
 */
 const Confax = require('../bot.js')
-const config = Confax.config
-const DevID = config.GlassToeID
 const request = require('request')
 const docAddress = 'https://docs.unity3d.com/ScriptReference/'
 const TOCAddress = 'https://docs.unity3d.com/ScriptReference/docdata/toc.js'
@@ -30,8 +28,10 @@ const notFound = ' was not found. Either it does not exist or it is mispelled.'
 var isFound = false
 
 Confax.registerCommand('unity', 'default', (message, bot) => {
-  let channel = message.guild.channels.find('name', 'vip_members')
-  if (channel === null || channel !== message.channel) { return }
+  const config = Confax.getConfig(message.guild.id)
+  const DevID = config.GlassToeID
+  //    let channel = message.guild.channels.find('name', 'vip_members')
+  //    if (channel === null || channel !== message.channel) { return }
   isFound = false
   let name = message.content.toString()
   //  Start the request to get the toc js object
@@ -42,7 +42,7 @@ Confax.registerCommand('unity', 'default', (message, bot) => {
     SearchAll(tableOfContents.children, name, message)
     if (!isFound) {
       message.channel.send('__**' + name + '**__' + notFound)
-      TellDevThisFailed(name, message)
+      //    TellDevThisFailed(name, message)
     }
   })
 }, ['Unity', 'unity3D', 'U3D', 'u3d', 'script', 'ref'], 'Look up Unity terms in the online script reference.', '<term>')
@@ -74,7 +74,7 @@ function CheckLink (address, name, message) {
     console.log('Status code:', response && response.statusCode)
     if (response.statusCode.toString() === '404') {
       message.channel.send('__**' + name + '**__' + notFound)
-      TellDevThisFailed(name, message)
+      //    TellDevThisFailed(name, message)
     } else {
       message.channel.send(address)
     }

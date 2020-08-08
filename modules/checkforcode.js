@@ -95,7 +95,6 @@ var lastLine = 0
 var firstReply
 var reactEmoji
 
-
 // Lets begin
 bot.on('message', message => {
   if (message.content.length > 1950) return // This message may be too long to post, once formatted.
@@ -145,7 +144,7 @@ function CheckMessage(lines, message) {
   if (IsBadCode() && !isFormatted) {
     lines[lastLine] = FormatLastLine(lines[lastLine])
     if (!autoPost) { // Either listen for a react or just post the new message
-      reactEmoji = message.guild.emojis.find(emoji => emoji.name === emojiName)
+      reactEmoji = message.guild.emojis.cache.find(emoji => emoji.name === emojiName)
       try {
         message.react(reactEmoji)
       } catch (error) {
@@ -156,9 +155,9 @@ function CheckMessage(lines, message) {
       message.reply(' ⬆ *If this is a block of code, please click the emoji on the message to auto format it, thanks.*')
         .then(msg => {
           firstReply = msg
-          msg.delete(timeToReact)
+          msg.delete({ timeout: timeToReact })
             .catch(() => {
-              console.log("Message is already deleted")
+              console.log('Message is already deleted')
             })
         })
         .then(() => {
@@ -167,8 +166,7 @@ function CheckMessage(lines, message) {
         .catch((error) => {
           console.log(error)
         })
-    }
-    else {
+    } else {
       CreateNewMessage(lines, message)
     }
   }
@@ -201,9 +199,9 @@ function FindCodeElements(index, line, lines) {
  * @param  {string[]} lines
  * @param  {string[]} message
  */
-function ListenForReacts(lines, message) {
+function ListenForReacts (lines, message) {
   const filter = (reaction, user) => {
-    return [emojiName].includes(reaction.emoji.name) && reaction.count > 1;
+    return [emojiName].includes(reaction.emoji.name) && reaction.count > 1
   }
   message.awaitReactions(filter, { max: 1, time: timeToReact, errors: ['time'] })
     .then(collected => {
@@ -211,13 +209,13 @@ function ListenForReacts(lines, message) {
       if (reaction.emoji.name === emojiName) {
         firstReply.delete()
           .catch(() => {
-            console.log("Message is already deleted")
+            console.log('Message is already deleted')
           })
         CreateNewMessage(lines, message)
       }
     })
     .catch(() => {
-      message.clearReactions()
+      message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error))
     })
 }
 
@@ -239,18 +237,18 @@ function CreateNewMessage(lines, message) {
  * @param  {string[]} message
  * @param  {string} newMessage
  */
-function PostNewMessage(message, newMessage) {
-  let channel = message.guild.channels.find('name', helpChannelname)
+function PostNewMessage (message, newMessage) {
+  let channel = message.guild.channels.cache.find(channel => channel.name === helpChannelname)
   let isHelp = message.channel.name.indexOf('help') > 0
   // Move to new channel
   if (channel != null && channel !== message.channel && !isHelp) {
     message.reply(yourUnformattedCode + channel + '.' +
       '\n\tThis message will self-destruct in *' + selfDestructIn + '* seconds')
-    channel.send(message.author + hereIsYourCode)
+    channel.reply(hereIsYourCode)
     channel.send(newMessage)
     // post in same channel
   } else {
-    message.channel.send(message.author + hereIsYourCode)
+    message.reply(hereIsYourCode)
     message.channel.send(newMessage)
   }
   DeleteOldMessage(message)
@@ -273,7 +271,7 @@ function DeleteOldMessage(message) {
  *  Adds code formatting block start to the first line of code
  * @param  {string} firstLine
  */
-function FormatFirstLine(firstLine) {
+function FormatFirstLine (firstLine) {
   /* TODO:
   What if the first line of code has some regular text at the beginning?
       "Here is my code: public int myInt = 0;"
@@ -288,7 +286,7 @@ function FormatFirstLine(firstLine) {
  * Add formatting code bock end to the last line of code
  * @param  {string} lastLine
  */
-function FormatLastLine(lastLine) {
+function FormatLastLine (lastLine) {
   return lastLine.replace(/`/g, '') + '\n' + formatBlock
 }
 
@@ -318,7 +316,7 @@ function InitVariables() {
  * @param  {string} channel
  * @param  {number} t
  */
-function EditBotMessage(usr, message, channel, t) {
+function EditBotMessage (usr, message, channel, t) {
   message.edit(usr + ', ' + yourUnformattedCode + channel + '.' +
     '\n\tThis message will self-destruct in *' + t + '* seconds')
 }
@@ -332,8 +330,8 @@ function EditBotMessage(usr, message, channel, t) {
  * @param  {string} chnl
  * @param  {string} usr
  */
-function CallNTimes(n, time, fn, msg, chnl, usr) {
-  function callFn() {
+function CallNTimes (n, time, fn, msg, chnl, usr) {
+  function callFn () {
     if (--n < 1) {
       usr = null
       msg.delete()

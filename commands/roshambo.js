@@ -31,8 +31,9 @@ const allMoves = [
 ]
 const mojiMoves = [' 👊', ' ✋', ' ✌']
 
-GlassBot.registerCommand('roshambo', 'default', (message) => {
+Confax.registerCommand('roshambo', 'default', (message) => {
   let channel = message.guild.channels.find('name', 'chill')
+  //  Command only works in #chill
   if (channel != null && channel === message.channel) {
     let userMove = message.content.toLowerCase()
     userMove = allMoves.indexOf(userMove) >= 0 ? userMove : null

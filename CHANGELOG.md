@@ -1,4 +1,4 @@
-# GlassBot Change Log
+# Confax Change Log (Currently unmaintained)
 
 All notable changes to this project will be documented in this file.
 

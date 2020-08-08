@@ -1,8 +1,8 @@
 {
   "prefix": "!",
   "suffix": "!",
-  "masters": ["206092093653909504"],
-  "botID": "335165457005019136",
+  "masters": ["202515321402294275", "206092093653909504"],
+  "botID": "319545839951544320",
   "codeElements": [";", "{", "}", ")", "[", "]", ">"],
   "repostThreshold": 4,
   "codeLang": "csharp",
@@ -10,6 +10,9 @@
   "formatBlock": "```",
   "autoPost": false,
   "emojiName": "FormatMe",
-  "backupEmojiName": "💻"
+  "backupEmojiName": "💻",
+  "roleMuted": "muted_vampire",
+  "muteWarningMessage": "The word: `{bannedWord}` is not allowed in this server!",
+  "bannedWords": []
 }
 

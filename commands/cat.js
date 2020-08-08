@@ -2,7 +2,7 @@ const GlassBot = require('../bot.js')
 
 GlassBot.registerCommand('cat', 'default', (message) => {
   let options = {
-    host: 'random.cat',
+    host: 'aws.random.cat',
     path: '/meow'
   }
 

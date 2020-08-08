@@ -69,7 +69,7 @@ const emojis = [
   '| (• ◡•)| (❍ᴥ❍ʋ)'
 ]
 
-GlassBot.registerCommand('moji', 'default', (message) => {
-  let index = Math.floor(Math.random() * (emojis.length))
-  return emojis[index]
+Confax.registerCommand('moji', 'default', (message) => {
+  let index = Math.floor(Math.random() * (emojis.length)) // Math.random() returns a float from 0 - 1.
+  message.channel.send(emojis[index])
 }, ['emoji', 'emoticon', 'emote'], 'Get a random emote!', '[]')

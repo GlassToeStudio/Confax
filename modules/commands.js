@@ -1,7 +1,7 @@
-const GlassBot = require('../bot.js')
-const bot = GlassBot.bot
-const config = GlassBot.config
-const commands = GlassBot.commands
+const Confax = require('../bot.js')
+const bot = Confax.bot
+const config = Confax.config
+const commands = Confax.commands
 
 bot.on('message', (message) => {
   let cmd = null
@@ -45,7 +45,7 @@ bot.on('message', (message) => {
       } else if (cmdType === 'moderator') {
         let accepted = ['Bot Commander', 'Moderator']
         let isMod
-        let roles = message.guild.member(message.author.id).roles.array()
+        let roles = message.guild.member(message.author.id).roles.cache.array()
         for (let i = 0; i < roles.length; i++) {
           if (accepted.includes(roles[i].name)) {
             isMod = true

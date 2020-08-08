@@ -1,13 +1,13 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 const fs = require('fs')
-const yaml = require('js-yaml')
 const config = require('./config')
 const chartConfig = require('./chartconfig')
 const http = require('http')
-const dotenv = require('dotenv')
-dotenv.load()
+const dotenv = require('dotenv').config()
+const warnedUserIds = require('./warneduserids')
 
+exports.warnedUserIds = warnedUserIds
 exports.bot = bot
 exports.config = config
 exports.chartConfig = chartConfig
@@ -18,16 +18,12 @@ exports.commands = {
   dm: {}
 }
 
-let registerCommand = function (name, type, callback, aliases, description, usage) {
-  exports.commands[type][name] = {}
-  exports.commands[type][name]['aliases'] = aliases
-  exports.commands[type][name]['description'] = description
-  exports.commands[type][name]['usage'] = usage
-  exports.commands[type][name]['process'] = callback
+var registerCommand = function (name, type, callback, aliases, description, usage) {
+  exports.commands[type][name] = { aliases, description, usage, process: callback }
 }
 
 var loadScript = (path, reload) => {
-  var req = require(path)
+  require(path)
   if (reload) {
     console.log('Reloaded script at ' + path)
   } else {
@@ -36,16 +32,33 @@ var loadScript = (path, reload) => {
 }
 
 function changeConfig (guildID, callback) {
-  var path = './glassbotfiles/' + guildID + '.yml'
-  var data = yaml.safeLoad(fs.readFileSync(path))
+  var path = './guilds/' + guildID + '.json'
+  var data = JSON.parse(fs.readFileSync(path))
   callback()
-  fs.writeFileSync(path, yaml.safeDump(data))
+  fs.writeFileSync(path, JSON.stringify(data, null, 2))
   console.log('Edited config in ' + path)
 }
 
+function getConfig (guildID) {
+  var path = './guilds/' + guildID + '.json'
+  var data
+  try {
+    data = JSON.parse(fs.readFileSync(path))
+  } catch (err) {
+    setConfig(guildID, config)
+    data = JSON.parse(fs.readFileSync(path))
+  }
+  try { return data } catch (error) { console.log('An error occured: ' + error.stack) }
+}
+
+function setConfig (guildID, config) {
+  var path = './guilds/' + guildID + '.json'
+  fs.writeFileSync(path, JSON.stringify(config, null, 2))
+}
+
 function getConfigValue (guildID, name) {
-  var path = './glassbotfiles/' + guildID + '.yml'
-  var data = yaml.safeLoad(fs.readFileSync(path))
+  var path = './guilds/' + guildID + '.json'
+  var data = JSON.parse(fs.readFileSync(path))
   try { return data[name] } catch (error) { console.log('An error occured: ' + error.stack) }
 }
 
@@ -53,6 +66,8 @@ exports.registerCommand = registerCommand
 exports.loadScript = loadScript
 exports.changeConfig = changeConfig
 exports.getConfigValue = getConfigValue
+exports.getConfig = getConfig
+exports.setConfig = setConfig
 
 var commands = fs.readdirSync('./commands/')
 commands.forEach(script => {
