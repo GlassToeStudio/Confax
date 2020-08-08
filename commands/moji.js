@@ -1,4 +1,4 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
 const emojis = [
   '( ͡° ͜ʖ ͡°)',

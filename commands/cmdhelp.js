@@ -1,11 +1,11 @@
 const Confax = require('../bot.js')
 
-GlassBot.registerCommand('cmdhelp', 'default', (message, bot) => {
+Confax.registerCommand('cmdhelp', 'default', (message, bot) => {
   let helpInfo = ''
   let cmd = message.content.split(' ')[0]
   let realCmd
   let cmdType
-  let commands = GlassBot.commands
+  let commands = Confax.commands
   if (!cmd) return 'Please provide a command to get the information from.'
   for (let loopCmdType in commands) {
     for (let loopCmd in commands[loopCmdType]) {

@@ -9,7 +9,8 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "mathjs": "^7.0.2",
+    "mathjs": "^7.1.0",
+    "plotly": "^1.0.6",
     "request": "^2.88.2"
   },
   "devDependencies": {

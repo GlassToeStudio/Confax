@@ -1,6 +1,6 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
-GlassBot.registerCommand('kick', 'moderator', (message, bot) => {
+Confax.registerCommand('kick', 'moderator', (message, bot) => {
   let mention = message.mentions.users.array()[0]
   let kickPerms = message.guild.member(bot.user).hasPermission('KICK_MEMBERS')
   if (mention === null) {

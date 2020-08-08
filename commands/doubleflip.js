@@ -1,5 +1,5 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
-GlassBot.registerCommand('doubleflip', 'default', (message) => {
+Confax.registerCommand('doubleflip', 'default', (message) => {
   return '┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻'
 }, [], 'Double table flip!', '[]')

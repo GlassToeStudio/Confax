@@ -1,6 +1,6 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
-GlassBot.registerCommand('eval', 'master', (message, bot) => {
+Confax.registerCommand('eval', 'master', (message, bot) => {
   try {
     let output = eval(message.content)
     if (!message.content.includes('bot.token') || !output.includes(bot.token)) {

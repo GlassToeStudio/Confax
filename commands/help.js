@@ -1,7 +1,7 @@
 const Confax = require('../bot.js')
 
-GlassBot.registerCommand('help', 'default', (message, bot) => {
-  let commands = GlassBot.commands
+Confax.registerCommand('help', 'default', (message, bot) => {
+  let commands = Confax.commands
   let cmds = {
     master: [],
     moderator: [],

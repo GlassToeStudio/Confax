@@ -1,6 +1,6 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 
-GlassBot.registerCommand('purge', 'moderator', (message, bot) => {
+Confax.registerCommand('purge', 'moderator', (message, bot) => {
   let deletePerms = message.guild.member(bot.user).hasPermission('MANAGE_MESSAGES')
   let args = message.content.split(' ')
   let amount = parseInt(args[0])

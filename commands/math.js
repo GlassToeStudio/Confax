@@ -1,7 +1,7 @@
-const GlassBot = require('../bot.js')
+const Confax = require('../bot.js')
 const math = require('mathjs')
 
-GlassBot.registerCommand('math', 'default', (message, bot) => {
+Confax.registerCommand('math', 'default', (message, bot) => {
   let result
   try {
     result = math.evaluate(message.content)
