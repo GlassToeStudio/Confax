@@ -6,11 +6,7 @@ services:
     container_name: confax
     restart: unless-stopped
     environment:
-<<<<<<< HEAD
       - BOT_TOKEN=
       - FINNHUB_API_KEY=
-=======
-      - BOT_TOKEN=MzIwNjY3NDUyNTgzMzEzNDA4.XPFnfg.ICDPfmZahljiSR_8pul9V41R9uA
->>>>>>> Add volume for server configs in Docker Compose file
     volumes:
       - './guilds:/usr/share/app/guilds'
